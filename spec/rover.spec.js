@@ -19,27 +19,40 @@ describe("Rover class", function () {
     let messageTest = {
       name: 'Test message with two commands',
     };
+
     expect((new Rover()).receiveMessage(messageTest)).toEqual(
       expect.objectContaining({
         name: messageTest.name,
       }),);
   });
 
-
   //* TEST 9
   test('response returned by receiveMessage includes two results if two commands are sent in the message', function () {
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
     let newMessage = new Message('Test message with two commands', commands);
 
-
     expect((new Rover()).receiveMessage(newMessage)).toEqual(
       expect.objectContaining({
-          name: newMessage.name,
-          results: (new Rover()).receiveMessage(newMessage).results,
-        }),);
+        results: (new Rover()).receiveMessage(newMessage).results,
+      }),);
   });
 
   //* TEST 10
+  test('responds correctly to the status check command', function () {
+
+    let commands = [new Command('STATUS_CHECK')];
+    let newMessage = new Message('Test for status check command', commands);
+    let results = (new Rover(98382, mode = 'NORMAL', generatorWatts = 110)).receiveMessage(newMessage).results;
+
+    expect(results[0]).toEqual(expect.objectContaining({
+      completed: true,
+      generatorWatts: 110,
+      mode: 'NORMAL',
+      position: 98382,
+    }),);
+  });
+
+
 
   //* TEST 11
 

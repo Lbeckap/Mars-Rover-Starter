@@ -19,7 +19,6 @@ describe("Rover class", function () {
     let messageTest = {
       name: 'Test message with two commands',
     };
-
     expect((new Rover()).receiveMessage(messageTest)).toEqual(
       expect.objectContaining({
         name: messageTest.name,
@@ -39,11 +38,10 @@ describe("Rover class", function () {
 
   //* TEST 10
   test('responds correctly to the status check command', function () {
-
     let commands = [new Command('STATUS_CHECK')];
     let newMessage = new Message('Test for status check command', commands);
-    let results = (new Rover(98382, mode = 'NORMAL', generatorWatts = 110)).receiveMessage(newMessage).results;
-
+    let rover = (new Rover(98382, mode = 'NORMAL', generatorWatts = 110));
+    let results = rover.receiveMessage(newMessage).results;
     expect(results[0]).toEqual(expect.objectContaining({
       completed: true,
       generatorWatts: 110,
@@ -52,9 +50,21 @@ describe("Rover class", function () {
     }),);
   });
 
-
-
   //* TEST 11
+  test('responds correctly to the mode change command', function () {
+
+    let commands = [new Command('MODE_CHANGE', 'LOW_POWER')];
+    let newMessage = new Message('Test for mode change command', commands);
+    let rover = (new Rover(98382, mode = 'NORMAL', generatorWatts = 110));
+    let results = rover.receiveMessage(newMessage).results;
+    let output = rover.mode;
+    expect(results[0]).toEqual(expect.objectContaining({
+      completed: true,
+    }),);
+    expect(output).toEqual('LOW_POWER');
+  });
+
+
 
   //* TEST 12
 

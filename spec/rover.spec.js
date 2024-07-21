@@ -77,5 +77,13 @@ describe("Rover class", function () {
   });
 
   //* TEST 13
+  test('responds with the position for the move command', function () {
+    let commands = [new Command('MOVE', 98400)];
+    let newMessage = new Message('Test for MOVE command', commands);
+    let rover = (new Rover(98382, mode = 'NORMAL', generatorWatts = 110));
+    let results = rover.receiveMessage(newMessage).results;
+    let output = rover.position;
 
+    expect(output).toEqual(98400);
+  });
 });

@@ -52,7 +52,6 @@ describe("Rover class", function () {
 
   //* TEST 11
   test('responds correctly to the mode change command', function () {
-
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER')];
     let newMessage = new Message('Test for mode change command', commands);
     let rover = (new Rover(98382, mode = 'NORMAL', generatorWatts = 110));
@@ -64,9 +63,18 @@ describe("Rover class", function () {
     expect(output).toEqual('LOW_POWER');
   });
 
-
-
   //* TEST 12
+  test('responds with a false completed value when attempting to move in LOW_POWER mode', function () {
+    let commands = [new Command('MOVE', 98400)];
+    let newMessage = new Message('Test for MOVE command', commands);
+    let rover = (new Rover(98382, mode = 'LOW_POWER', generatorWatts = 110));
+    let results = rover.receiveMessage(newMessage).results;
+    let output = rover.position;
+    expect(results[0]).toEqual(expect.objectContaining({
+      completed: false,
+    }),);
+    expect(output).toEqual(98382);
+  });
 
   //* TEST 13
 

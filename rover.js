@@ -11,12 +11,11 @@ class Rover {
 
    receiveMessage(message) {
       let results = [];
-      let status = true;
+      // let status = true;
 
       for (let item in message.commands) {
-        console.log(`current command ${message.commands[item]['commandType']}\ncurrent mode ${this.mode}`);
-        
-         results.push({ completed: status });
+        console.log(`current command ${message.commands[item]['commandType']}\ncurrent mode ${this.mode}`); //DEBUGGING  
+        results.push({ completed: true});
 
          if(message.commands[item]['commandType'] === 'MODE_CHANGE') {
            this.mode = message.commands[item]['value'];
@@ -27,7 +26,15 @@ class Rover {
             results[item].generatorWatts = this.generatorWatts;
             results[item].position = this.position;
          }
-         console.log(`new mode: ${this.mode}`);
+
+         if(message.commands[item]['commandType'] === 'MOVE' && this.mode === 'LOW_POWER'){
+            // status = false;
+            results.splice(item, 1, {completed: false})
+                    
+         } else if (message.commands[item]['commandType'] === 'MOVE' && this.mode === 'NORMAL'){
+            this.position = message.commands[item]['value'];
+         }
+         console.log(`new mode: ${this.mode}`); //DEBUGGING  
       }
 
       const returnedMessage = {

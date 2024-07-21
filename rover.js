@@ -11,14 +11,12 @@ class Rover {
 
    receiveMessage(message) {
       let results = [];
-      // let status = true;
 
       for (let item in message.commands) {
-        console.log(`current command ${message.commands[item]['commandType']}\ncurrent mode ${this.mode}`); //DEBUGGING  
-        results.push({ completed: true});
+         results.push({ completed: true });
 
-         if(message.commands[item]['commandType'] === 'MODE_CHANGE') {
-           this.mode = message.commands[item]['value'];
+         if (message.commands[item]['commandType'] === 'MODE_CHANGE') {
+            this.mode = message.commands[item]['value'];
          }
 
          if (message.commands[item]['commandType'] === 'STATUS_CHECK') {
@@ -27,14 +25,12 @@ class Rover {
             results[item].position = this.position;
          }
 
-         if(message.commands[item]['commandType'] === 'MOVE' && this.mode === 'LOW_POWER'){
-            // status = false;
-            results.splice(item, 1, {completed: false})
-                    
-         } else if (message.commands[item]['commandType'] === 'MOVE' && this.mode === 'NORMAL'){
+         if (message.commands[item]['commandType'] === 'MOVE' && this.mode === 'LOW_POWER') {
+            results.splice(item, 1, { completed: false })
+
+         } else if (message.commands[item]['commandType'] === 'MOVE' && this.mode === 'NORMAL') {
             this.position = message.commands[item]['value'];
          }
-         console.log(`new mode: ${this.mode}`); //DEBUGGING  
       }
 
       const returnedMessage = {
@@ -44,12 +40,5 @@ class Rover {
       return returnedMessage;
    }
 }
-
-// let commands = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
-// let message = new Message('Test message with two commands', commands);
-// let rover = new Rover(98382);    // Passes 98382 as the rover's position.
-// let response = rover.receiveMessage(message);
-
-// console.log(response);
 
 module.exports = Rover;

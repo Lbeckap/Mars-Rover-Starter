@@ -12,7 +12,7 @@ describe("Message class", function() {
 
 //* TEST 5
     test('constructor sets name', function() {     
-      expect(new Message('MODE_CHANGE','commands')).toHaveProperty('name', 'MODE_CHANGE');
+      expect(new Message('Message Name','commands')).toHaveProperty('name', 'Message Name');
     });
     
 

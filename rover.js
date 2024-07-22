@@ -3,26 +3,30 @@ const Command = require('./command.js');
 
 class Rover {
    // Write code here!
-   constructor(position, mode = 'NORMAL', generatorWatts = 110) {
+   constructor(position) {
       this.position = position;
-      this.mode = mode;
-      this.generatorWatts = generatorWatts;
+      this.mode = 'NORMAL';
+      this.generatorWatts = 110;
    }
 
    receiveMessage(message) {
       let results = [];
-
       for (let item in message.commands) {
          results.push({ completed: true });
-
          if (message.commands[item]['commandType'] === 'MODE_CHANGE') {
             this.mode = message.commands[item]['value'];
          }
 
          if (message.commands[item]['commandType'] === 'STATUS_CHECK') {
-            results[item].mode = this.mode;
-            results[item].generatorWatts = this.generatorWatts;
-            results[item].position = this.position;
+            let update = {
+               completed: true,
+               roverStatus: {
+                  mode: this.mode,
+                  generatorWatts: this.generatorWatts,
+                  position: this.position,
+               },
+            }
+            results.splice(item, 1, update);
          }
 
          if (message.commands[item]['commandType'] === 'MOVE' && this.mode === 'LOW_POWER') {
@@ -32,9 +36,8 @@ class Rover {
             this.position = message.commands[item]['value'];
          }
       }
-
       const returnedMessage = {
-         name: message.name,
+         message: message.name,
          results: results,
       };
       return returnedMessage;

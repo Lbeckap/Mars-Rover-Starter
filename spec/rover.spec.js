@@ -36,10 +36,13 @@ describe("Rover class", function () {
     let newMessage = new Message('Test for status check command', commands);
     let rover = new Rover(98382);
     let results = rover.receiveMessage(newMessage).results;
-    expect(results[0].roverStatus).toEqual(expect.objectContaining({
-      generatorWatts: 110,
-      mode: 'NORMAL',
-      position: 98382,
+    expect(results[0]).toEqual(expect.objectContaining({
+      completed: true,
+      roverStatus: {
+        mode: 'NORMAL',
+        generatorWatts: 110,
+        position: 98382,
+      },
     }),);
   });
 
@@ -54,7 +57,7 @@ describe("Rover class", function () {
     }),);
     expect(output).toEqual('LOW_POWER');
   });
-  
+
   test('responds with a false completed value when attempting to move in LOW_POWER mode', function () {
     let commands = [new Command('MOVE', 98400)];
     let newMessage = new Message('Test for MOVE command', commands);
@@ -72,7 +75,7 @@ describe("Rover class", function () {
     let commands = [new Command('MOVE', 98400)];
     let newMessage = new Message('Test for MOVE command', commands);
     let rover = (new Rover(98382));
-    rover.receiveMessage(newMessage).results;
+    rover.receiveMessage(newMessage);
     let output = rover.position;
     expect(output).toEqual(98400);
   });

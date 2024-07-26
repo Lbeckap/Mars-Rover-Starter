@@ -14,7 +14,8 @@ describe("Message class", function() {
     });
     
     test('contains a commands array passed into the constructor as the 2nd argument', function() {
-        expect(new Message('name', [{1:'1'},{2:'2'},{3:'3'}])).toHaveProperty('commands', expect.arrayContaining([{1:'1'},{2:'2'},{3:'3'}]));
+        let output = [{1:'1'},{2:'2'},{3:'3'}];
+        expect(new Message('name', output)).toHaveProperty('commands', expect.arrayContaining(output));
     })
     
 });

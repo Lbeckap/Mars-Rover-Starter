@@ -12,7 +12,6 @@ class Rover {
    receiveMessage(message) {
       let results = [];
       for (let item in message.commands) {
-         // results.push({ completed: true });
          if (message.commands[item]['commandType'] === 'MODE_CHANGE') {
             this.mode = message.commands[item]['value'];
             results.push({ completed: true });
@@ -32,7 +31,6 @@ class Rover {
 
          if (message.commands[item]['commandType'] === 'MOVE' && this.mode === 'LOW_POWER') {
             results.push({ completed: false });
-            // results.splice(item, 1, { completed: false })
 
          } else if (message.commands[item]['commandType'] === 'MOVE' && this.mode === 'NORMAL') {
             this.position = message.commands[item]['value'];

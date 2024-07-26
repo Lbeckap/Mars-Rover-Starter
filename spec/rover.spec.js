@@ -7,14 +7,12 @@ const Command = require('../command.js');
 
 
 describe("Rover class", function () {
-  //* TEST 7
   test('constructor sets position and default values for mode and generatorWatts', function () {
     expect(new Rover(98382)).toHaveProperty('position', 98382);
     expect(new Rover(98382)).toHaveProperty('mode', 'NORMAL');
     expect(new Rover(98382)).toHaveProperty('generatorWatts', 110);
   });
 
-  //* TEST 8
   test('response returned by receiveMessage contains the name of the message', function () {
     let message = new Message('TA power');
     let rover = new Rover(98382);
@@ -25,7 +23,6 @@ describe("Rover class", function () {
       }),);
   });
 
-  //* TEST 9
   test('response returned by receiveMessage includes two results if two commands are sent in the message', function () {
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
     let message = new Message('Test message with two commands', commands);
@@ -34,7 +31,6 @@ describe("Rover class", function () {
     expect(response.results.length).toEqual(2);
   });
 
-  //* TEST 10
   test('responds correctly to the status check command', function () {
     let commands = [new Command('STATUS_CHECK')];
     let newMessage = new Message('Test for status check command', commands);
@@ -47,7 +43,6 @@ describe("Rover class", function () {
     }),);
   });
 
-  //* TEST 11
   test('responds correctly to the mode change command', function () {
     let commands = [new Command('MODE_CHANGE', 'LOW_POWER')];
     let newMessage = new Message('Test for mode change command', commands);
@@ -59,8 +54,7 @@ describe("Rover class", function () {
     }),);
     expect(output).toEqual('LOW_POWER');
   });
-
-  //* TEST 12
+  
   test('responds with a false completed value when attempting to move in LOW_POWER mode', function () {
     let commands = [new Command('MOVE', 98400)];
     let newMessage = new Message('Test for MOVE command', commands);
@@ -74,7 +68,6 @@ describe("Rover class", function () {
     expect(output).toEqual(98382);
   });
 
-  //* TEST 13
   test('responds with the position for the move command', function () {
     let commands = [new Command('MOVE', 98400)];
     let newMessage = new Message('Test for MOVE command', commands);
